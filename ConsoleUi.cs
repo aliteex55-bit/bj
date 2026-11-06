@@ -58,8 +58,12 @@ class ConsoleUi
                 {
                     Console.Write("Köp (k) eller stanna (s): ");
                     string? answer = Console.ReadLine();
-                    // End-of-input stops further prompts while allowing this round to finish.
-                    if (answer is null) { inputEnded = true; break; }
+                    // An interrupted round has no result; leave the previous save untouched.
+                    if (answer is null)
+                    {
+                        Console.WriteLine("\nInmatningen avslutades. Rundan avbröts och inga resultat sparades.");
+                        return;
+                    }
                     answer = answer.Trim().ToLowerInvariant();
                     if (answer is "s" or "stanna") break;
                     if (answer is not ("k" or "köp" or "kop"))

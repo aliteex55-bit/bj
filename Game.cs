@@ -20,6 +20,7 @@ class Game
         deck.PrepareRound();
         Dealer.Clear();
         foreach (Player player in Players) player.Hand.Clear();
+        // Deal one card to each participant, then repeat for the second card.
         for (int i = 0; i < 2; i++)
         {
             foreach (Player player in Players) player.Hand.Add(deck.Deal());
@@ -41,8 +42,10 @@ class Game
     public bool DealerShouldHit => Dealer.Total <= 16;
     public Outcome GetOutcome(Hand player)
     {
+        // A player who busts loses even if the dealer later busts too.
         if (player.IsBust) return Outcome.Lose;
         if (Dealer.IsBust) return Outcome.Win;
+        // A two-card natural beats a 21 made with three or more cards.
         if (player.Total == 21 && Dealer.Total == 21 && player.IsBlackjack != Dealer.IsBlackjack)
             return player.IsBlackjack ? Outcome.Win : Outcome.Lose;
         return player.Total > Dealer.Total ? Outcome.Win : player.Total < Dealer.Total ? Outcome.Lose : Outcome.Push;

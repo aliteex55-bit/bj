@@ -12,6 +12,7 @@ class Deck
     public void PrepareRound()
     {
         RebuiltDuringRound = false;
+        // The specified cutoff is checked between rounds, not after every card.
         if (CardsLeft < 15) Rebuild();
     }
     private void Rebuild()
@@ -19,7 +20,7 @@ class Deck
         cards.Clear();
         foreach (string suit in Suits)
             foreach (string rank in Ranks) cards.Add(new Card(rank, suit));
-        // Fisher–Yates includes position i in the choice.
+        // Fisher–Yates chooses from 0 through i, then swaps that card into position i.
         for (int i = cards.Count - 1; i > 0; i--)
         {
             int j = random.Next(i + 1);

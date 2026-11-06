@@ -32,6 +32,9 @@ Kortgrafiken motsvarar tillval 1 i uppgiftsbeskrivningen. `CardRenderer` returne
 
 ## Arbete och kända begränsningar
 
+Projektet har främst sparats lokalt på datorn. Filerna samlades och laddades upp till GitHub i ett sammanhållet tillfälle nära inlämningen, vilket förklarar att många commits ligger tätt i tiden. De visar uppladdningen och efterföljande förtydliganden, inte hela utvecklingshistoriken.
+
 Arbetet har enligt uppgift genomförts individuellt med stöd av Claude och Codex. Uppgiftsbeskrivningen gäller ett grupparbete och innehåller krav på granskade pull requests; hur dessa krav tillämpas vid individuell omtenta behöver bekräftas med läraren.
 
 Om kortleken skulle ta slut under en ovanligt lång runda skapas en ny blandad lek och programmet meddelar det. Kort från den pågående rundan kan då förekomma igen i den nya leken. Kortfärgernas visning beror på terminalens stöd för färg och Unicode.
+

@@ -35,6 +35,7 @@ class ConsoleUi
                 if (name.Length == 0) { Console.WriteLine("Ange ett namn."); continue; }
                 if (players.Any(player => string.Equals(player.Name, name, StringComparison.OrdinalIgnoreCase)))
                 { Console.WriteLine("Välj ett annat namn; spelarna behöver olika namn."); continue; }
+                // Reuse the saved record when this name has played before.
                 PlayerRecord? record = records.Find(item => string.Equals(item.Name, name, StringComparison.OrdinalIgnoreCase));
                 if (record is null) { record = new PlayerRecord { Name = name }; records.Add(record); }
                 players.Add(new Player(record));
@@ -57,6 +58,7 @@ class ConsoleUi
                 {
                     Console.Write("Köp (k) eller stanna (s): ");
                     string? answer = Console.ReadLine();
+                    // End-of-input stops further prompts while allowing this round to finish.
                     if (answer is null) { inputEnded = true; break; }
                     answer = answer.Trim().ToLowerInvariant();
                     if (answer is "s" or "stanna") break;
@@ -69,6 +71,7 @@ class ConsoleUi
                 if (player.Hand.IsBust) Console.WriteLine("Spräckt!");
             }
 
+            // The dealer completes the round even when every player has busted.
             Console.WriteLine("\nGivaren vänder sitt dolda kort:");
             ShowHand(game.Dealer, false);
             while (game.DealerShouldHit)
@@ -126,6 +129,7 @@ class ConsoleUi
 
     private void ShowHand(Hand hand, bool hideSecondCard)
     {
+        // Keep the second dealer card hidden until the dealer's turn.
         List<(Card? card, string[] rows)> rendered = hand.Cards.Select((card, index) =>
         {
             Card? visible = hideSecondCard && index == 1 ? null : card;
@@ -133,6 +137,7 @@ class ConsoleUi
         }).ToList();
         ConsoleColor oldForeground = Console.ForegroundColor;
         ConsoleColor oldBackground = Console.BackgroundColor;
+        // Print the same row of every card before moving to the next row.
         for (int row = 0; row < 7; row++)
         {
             foreach (var (card, rows) in rendered)
@@ -143,6 +148,7 @@ class ConsoleUi
                     Console.ForegroundColor = card?.Suit is "♥" or "♦" ? ConsoleColor.Red : ConsoleColor.Black;
                 }
                 Console.Write(rows[row]);
+                // Restore terminal colors after each card rather than changing later text.
                 if (!Console.IsOutputRedirected) { Console.ForegroundColor = oldForeground; Console.BackgroundColor = oldBackground; }
                 Console.Write("  ");
             }
